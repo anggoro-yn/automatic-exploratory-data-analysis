@@ -1,0 +1,61 @@
+{
+  "config_report":{
+    "name_report": "dataset-climate-tf",
+    "name_data_pkl": "data_weather.pkl",
+    "feature_target": "T (degC)"
+  },
+  
+
+  "reports_to_show":{
+    "ydata_profiling": false,
+    "univariate_analysis": false,
+    "bivariate_analysis": true,
+    "data_segmentation_analysis": false
+  },
+
+
+  "ydata_profiling":{
+    "minimal":true
+  },
+
+  
+  "univariate_analysis":{
+    "number_columns": 2,
+
+    "zoom_tendency":{
+      "zoom": true,
+      "start_date": "2009-01-01 00:10:00",
+      "end_date": "2010-01-01 00:00:00"
+    },
+
+    "smooth_data":{
+      "moving_average":{
+        "window": 5
+      },
+      "weighted_moving_average":{
+        "weights":[0.05, 0.10, 0.15, 0.3, 0.4]
+      },
+      "exponential_moving_average":{
+        "alpha": 0.1
+      }
+    },
+
+    "acf_pacf":{
+      "lags": 40
+    }
+  },
+
+
+  "bivariate_analysis":{
+    "correlations":{
+      "threshold_corr": null,
+      "threshold_corr_target": 0.01
+    }
+
+  },
+
+
+  "data_segmentation_analysis":{
+    
+  }
+}
