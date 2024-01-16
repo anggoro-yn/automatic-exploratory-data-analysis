@@ -60,6 +60,28 @@ def generate_descriptive_statistics(df):
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""" HISTOGRAMS """""""""""""""""""""""""""""""""""""""""""""""""
+def plot_individual_hist_segment(df, var_segment, feature_hist):
+    """
+    Plot individual hist
+    Args
+        df (dataframe): input dataframe
+        varg_segment (string): name of the column in the input dataframe that indicate the differents segments in the data
+        feature_hist (string): name of the feature in the input dataframe that will plot its histogram
+
+    Return
+        fig (figure plotly): fig of plotly with the plot generated
+    """
+    
+    fig = px.histogram(df, x = feature_hist, color = var_segment, barmode='overlay', opacity=0.4)
+
+    # update title
+    fig.update_layout(
+      title_text = f'Histogram: {feature_hist}',
+      title_x = 0.5, # centrar titulo
+      title_font = dict(size = 20)
+    )
+    return fig
+
 
 def plot_histogram(df, feature_hist, type_hist = 'automatically_plotly', nbins = 10):
     """
@@ -287,14 +309,53 @@ def plot_multiple_tendency(df, number_columns = 2):
   
   # change shape subplot
     fig.update_layout(
-            height = 350 * number_rows, # largo
-            width = 850 * number_columns, # ancho
+            height = 550 * number_rows, # largo
+            width = 1850 * number_columns, # ancho
       title_text="Plots of tendency",
       title_x = 0.5, # centrar titulo
       title_font = dict(size = 28)
       )
     
     ############################## 
+
+    return fig
+
+
+def plot_all_trend_oneplot(df):
+    """
+    Plot the trend of all dataframes into one plot. All features with differents with its own scale
+
+    Args
+        df (dataframe): input dataframe
+
+    Return
+        fig (figure plotly): fig of plotly with the plot generated
+    """
+
+    # create figure
+    fig = go.Figure()
+    
+    # plot each trend
+    for index, feature in enumerate(df.columns.tolist()):
+        fig.add_trace(go.Scatter(
+            x = df.index,
+            y = df[feature],
+            name = f"trend {feature}",
+            yaxis = f"y{index+1}"
+        ))
+    
+    
+    # generate axis_configuracion dictionary
+    axis_configurations = {
+        "yaxis1": dict(title="yaxis1 title")
+    }
+    for index, feature in enumerate(df.columns.tolist()[1:]):  # since second feature because first feature yaxis already has defined
+        axis_configurations[f"yaxis{index+2}"] = dict(title = f"yaxis {feature}", anchor="free", overlaying="y", autoshift=True, title_standoff=0)
+    
+    
+    # update loyout according axis_configuration dictionary
+    for axis_name, config in axis_configurations.items():
+        fig.update_layout(**{axis_name: config})
 
     return fig
 """""""""""""""""""""""""""""""""""""""""""""""""  """""""""""""""""""""""""""""""""""""""""""""""""

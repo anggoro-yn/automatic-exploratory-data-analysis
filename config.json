@@ -2,7 +2,9 @@
   "config_report":{
     "name_report": "dataset-climate-tf",
     "name_data_pkl": "data_weather.pkl",
-    "feature_target": "T (degC)"
+    "target": "T (degC)",
+    "list_features": ["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)"],
+    "number_columns": 2
   },
   
 
@@ -10,7 +12,9 @@
     "ydata_profiling": false,
     "univariate_analysis": false,
     "bivariate_analysis": true,
-    "data_segmentation_analysis": false
+    "segmentation_analysis": true,
+    "categotical_analysis":false
+
   },
 
 
@@ -20,10 +24,7 @@
 
   
   "univariate_analysis":{
-    "number_columns": 2,
-
     "zoom_tendency":{
-      "zoom": true,
       "start_date": "2009-01-01 00:10:00",
       "end_date": "2010-01-01 00:00:00"
     },
@@ -48,14 +49,70 @@
 
   "bivariate_analysis":{
     "correlations":{
-      "threshold_corr": null,
+      "threshold_corr_all_features": null,
       "threshold_corr_target": 0.01
-    }
+    },
 
+    "scatter_plot":{
+      "individual_scatter":{
+        "marginal": false
+      }
+    },
+
+    "correlations_features_lagged_target":{
+      "lags":40
+    },
+
+    "parallel":{
+      "list_features":["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)"]
+    }
   },
 
 
-  "data_segmentation_analysis":{
-    
+  "segmentation_analysis":{
+    "segments":[
+      {"type":"custom", "var_segment": "p (mbar)", "interval_segment": [0, 980, 1000, 1020], "labels_segment": ["Low Presure", "Medium Presure", "High Presure"]}
+    ],
+
+    "correlations":{
+      "threshold_corr_all_features": null,
+      "threshold_corr_target": 0.01
+    },
+
+    "scatter_plot":{
+      "individual_scatter":{
+        "marginal": true
+      }
+    },
+
+    "parallel_target_discrete":{
+        "show":false,
+        "list_features":["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)"]
+      }
+    },
+
+
+  "categotical_analysis":{
+    "percentile_tranform":{
+      "categories_features":{
+        "features":["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)"],
+        "percentile":["quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile"]
+      },
+      "categories_target":{
+        "features":["T (degC)"],
+        "percentile":["quartile"]
+      }
+    },
+
+
+    "parallel":{
+      "list_features":["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)"]
+    },
+
+    "T (degC)":123,
+    "p (mbar)":"original segmentation"
+
   }
+
+  
 }
