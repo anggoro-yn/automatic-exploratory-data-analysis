@@ -99,7 +99,7 @@
         "percentile":["quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile"]
       },
       "categories_target":{
-        "features":["T (degC)"],
+        "target":["T (degC)"],
         "percentile":["quartile"]
       }
     },
