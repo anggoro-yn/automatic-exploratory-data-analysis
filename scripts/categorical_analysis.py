@@ -92,6 +92,9 @@ def calculate_freq_data(df):
     # round to 3 decimals
     freq_df['Freq (percent)'] = freq_df['Freq (percent)'].round(3)
 
+    # order table by index - get the values ordered by percentile of each feauture
+    freq_df = freq_df.sort_index()
+
     # transform df freq_df into a format to plotly
     freq_df_to_plotly = freq_df.reset_index()
     freq_df_to_plotly.loc[freq_df_to_plotly['level_0'].duplicated(), 'level_0'] = ''
@@ -302,8 +305,10 @@ def plot_individual_hist_target_categorical_features(df, var_categorical, var_co
     Return
         fig (figure plotly): fig of plotly with the plot generated
     """
+    # sort data before plot - to show de categories of categorical variable in order
+    df_sorted = df.sort_values(by = [var_categorical], ascending = True)
     
-    fig = px.histogram(df, x = var_continuous_hist, color = var_categorical, barmode='overlay', opacity=0.4)
+    fig = px.histogram(df_sorted, x = var_continuous_hist, color = var_categorical, barmode='overlay', opacity=0.4)
 
     # update title
     fig.update_layout(
@@ -324,8 +329,11 @@ def plot_individual_boxplot_target_categorical_features(df, var_categorical, var
     Return
         fig (figure plotly): fig of plotly with the plot generated
     """
+    # sort data before plot - to show de categories of categorical variable in order
+    df_sorted = df.sort_values(by = [var_categorical], ascending = True)
+    
     fig = go.Figure()
-    fig.add_trace(go.Box(x=df[var_categorical], y=df[var_continuous_hist]))
+    fig.add_trace(go.Box(x=df_sorted[var_categorical], y=df_sorted[var_continuous_hist]))
 
     # update title
     fig.update_layout(
@@ -372,9 +380,12 @@ def plot_boxplots_target_categorical_features(df, var_continuous_hist, number_co
         # obtener índices en el subplot (en plotly los índices comienzan en 1, por lo que debe sumarse un 1 a los resultados obtenidos)
         row = (index_feature // number_columns) + 1
         column = (index_feature % number_columns) + 1
+
+        # sort data by variable to plot. show categories of categorical varialble in order
+        df_sorted = df.sort_values(by = [feature], ascending = True)
         
         # add trace boxplot
-        fig.add_trace(go.Box(x=df[feature], y=df[var_continuous_hist]),
+        fig.add_trace(go.Box(x=df_sorted[feature], y=df_sorted[var_continuous_hist]),
                 row = row,
                 col = column)
         fig.update_yaxes(title_text = var_continuous_hist, row=row, col=column)
@@ -437,6 +448,9 @@ def calculate_freq_target_each_features(df, target, ct_normalized = True):
 
     # transform output into 2 decimals
     resume = resume.round(2)
+
+    # order table by index - get the values ordered by percentile of each feauture
+    resume = resume.sort_index()
     
     # transfrom table into a format to show in plotly
     resume_to_plotly = resume.reset_index()
@@ -1047,5 +1061,180 @@ def plot_parallel_discrete_variables(df_percentile, list_features_target_to_plot
       )
 
     return fig
+"""""""""""""""""""""""""""""""""""""""""""""""""  """""""""""""""""""""""""""""""""""""""""""""""""
 
-""""""""""""""""""""""""""""""""""""""""""""""""" PARALLEL """""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""" WOE / IV """""""""""""""""""""""""""""""""""""""""""""""""
+def calculate_woe_iv(df, feature_woe, target):
+    """
+    Calculate WOE and IV for a categories of a feature
+
+    Args:
+        df (dataframe): input dataframe
+        feature_woe (string): feature to calculate woe of its categories. feature_woe needs to be in the input dataframe
+        target (string): target. target needs to be in the input dataframe
+
+    Return
+        table_woe_iv (dataframe): dataframe with the values of woe and iv of each categorie of the feature
+        value_iv (float): value of IV for the feature
+    """
+    # get unique values of the target and get the positive categorie and negative categorie of the target. 
+    # First cat -> positive / second cat -> negative
+    list_cat_target = data[target].cat.categories.tolist()
+    target_cat_positive = list_cat_target[0]
+    target_cat_negative = list_cat_target[1]
+
+
+    ################################# WOE #################################
+    # Crear una tabla de resumen con el conteo de eventos positivos y negativos por categoría
+    table_woe_iv = pd.DataFrame({feature_woe: df.loc[:, feature_woe], 'Target': df.loc[:, target]})
+    table_woe_iv = table_woe_iv.groupby(feature_woe)['Target'].value_counts().unstack().reset_index()
+    table_woe_iv.rename(columns={0: target_cat_negative, 1: target_cat_positive}, inplace=True)
+
+    # Calcular la proporción de eventos positivos y negativos
+    table_woe_iv[f'{target_cat_positive}_Rate'] = table_woe_iv[target_cat_positive] / table_woe_iv[target_cat_positive].sum()
+    table_woe_iv[f'{target_cat_negative}_Rate'] = table_woe_iv[target_cat_negative] / table_woe_iv[target_cat_negative].sum()
+    
+    # Calcular el WOE (Weight of Evidence)
+    table_woe_iv['WOE'] = np.log(table_woe_iv[f'{target_cat_positive}_Rate'] / table_woe_iv[f'{target_cat_negative}_Rate'])
+    
+
+    ################################# IV #################################
+    # Calcular la contribución del WOE al IV
+    table_woe_iv['IV_category'] = (table_woe_iv[f'{target_cat_positive}_Rate'] - table_woe_iv[f'{target_cat_negative}_Rate']) * table_woe_iv['WOE']
+
+
+    # Calcular el IV (Information Value)
+    value_iv = table_woe_iv['IV_category'].sum()
+
+    return table_woe_iv, value_iv
+
+
+def plot_hist_woe_iv(table_woe_iv, value_iv):
+    """
+    Plot a hist/freq of each categories of the feature and also plot the woe of each categorie.
+    Also, show in the title of the plot the IV of the feature
+  
+    Args:
+        table_woe_iv (dataframe): dataframe with the values of woe and iv of each categorie of the feature
+        value_iv (float): value of IV for the feature
+
+    Return
+        fig (figure plotly): fig of plotly with the plot generated
+    """
+
+    """ GENERAR DATAFRAME CON LOS VALORES A PLOTEAR """
+    # given the structure of the table table_woe_iv, get the column name of categories positives and negatives of the target
+    list_cat_feature = table_woe_iv[table_woe_iv.columns.tolist()[0]].cat.categories.tolist()
+    positive_cat_target = table_woe_iv.columns.tolist()[1]
+    negative_cat_target = table_woe_iv.columns.tolist()[2]
+    
+    
+    #calcular frecuencia de cada categoría 
+    df_to_plot = pd.DataFrame(columns = ['freq', 'WOE'])
+    df_to_plot['freq'] = table_woe_iv[negative_cat_target] + table_woe_iv[positive_cat_target]
+    df_to_plot['WOE'] = table_woe_iv['WOE']
+    df_to_plot.index = list_cat_feature
+
+    """ GRAFICAR """
+    # Crear la figura
+    fig = go.Figure()
+
+    # Agregar el gráfico de barras
+    fig.add_trace(go.Bar(
+      x=df_to_plot.index,
+      y=df_to_plot['freq'],
+      name='Freq',
+      marker_color='steelblue'
+    ))
+
+    # Agregar el gráfico de línea en el eje derecho
+    fig.add_trace(go.Scatter(
+      x=df_to_plot.index,
+      y=df_to_plot['WOE'],
+      name='WOE',
+      yaxis='y2',
+      line=dict(color='firebrick', width=2)
+    ))
+    
+    # Configurar el diseño del gráfico
+    fig.update_layout(
+      title={
+          'text': f'IV VALUE: {round(value_iv, 3)}',
+          'x': 0.5,
+          'xanchor': 'center',
+          'yanchor': 'top',
+          'font': {'size': 24}
+      },
+      xaxis=dict(title='Category'),
+      yaxis=dict(title='Freq'),
+      yaxis2=dict(title='WOE', overlaying='y', side='right'),
+      legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')
+    )
+    
+    return fig
+
+def plot_hist_woe_iv(table_woe_iv, value_iv):
+    """
+    Plot a hist/freq of each categories of the feature and also plot the woe of each categorie.
+    Also, show in the title of the plot the IV of the feature
+  
+    Args:
+        table_woe_iv (dataframe): dataframe with the values of woe and iv of each categorie of the feature
+        value_iv (float): value of IV for the feature
+
+    Return
+        fig (figure plotly): fig of plotly with the plot generated
+    """
+
+    """ GENERAR DATAFRAME CON LOS VALORES A PLOTEAR """
+    # given the structure of the table table_woe_iv, get the column name of categories positives and negatives of the target
+    list_cat_feature = table_woe_iv[table_woe_iv.columns.tolist()[0]].cat.categories.tolist()
+    positive_cat_target = table_woe_iv.columns.tolist()[1]
+    negative_cat_target = table_woe_iv.columns.tolist()[2]
+    
+    
+    #calcular frecuencia de cada categoría 
+    df_to_plot = pd.DataFrame(columns = ['freq', 'WOE'])
+    df_to_plot['freq'] = table_woe_iv[negative_cat_target] + table_woe_iv[positive_cat_target]
+    df_to_plot['WOE'] = table_woe_iv['WOE']
+    df_to_plot.index = list_cat_feature
+
+    """ GRAFICAR """
+    # Crear la figura
+    fig = go.Figure()
+
+    # Agregar el gráfico de barras
+    fig.add_trace(go.Bar(
+      x=df_to_plot.index,
+      y=df_to_plot['freq'],
+      name='Freq',
+      marker_color='steelblue'
+    ))
+
+    # Agregar el gráfico de línea en el eje derecho
+    fig.add_trace(go.Scatter(
+      x=df_to_plot.index,
+      y=df_to_plot['WOE'],
+      name='WOE',
+      yaxis='y2',
+      line=dict(color='firebrick', width=2)
+    ))
+    
+    # Configurar el diseño del gráfico
+    fig.update_layout(
+      title={
+          'text': f'IV VALUE: {round(value_iv, 3)}',
+          'x': 0.5,
+          'xanchor': 'center',
+          'yanchor': 'top',
+          'font': {'size': 24}
+      },
+      xaxis=dict(title='Category'),
+      yaxis=dict(title='Freq'),
+      yaxis2=dict(title='WOE', overlaying='y', side='right'),
+      legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')
+    )
+    
+    return fig

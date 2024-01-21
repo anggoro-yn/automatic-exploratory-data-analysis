@@ -639,7 +639,7 @@ def plot_tendency_segment(df, feature_plot, var_segment):
     Plot the individual tendency of a feature present in a dataframe. Color the tendency according the segment
 
     Args
-        df (dataframe): data. The index should be the timestamp
+        df (dataframe): data. The index should be the timestamp and the dataframe must be sorted by the index
         feature_plot (string): name of the feature that will be ploted
         var_segment (string): name of the variable that segment the data to color the scatter plot
 
@@ -683,7 +683,7 @@ def plot_multiple_tendency_segmentation(df, var_segment, number_columns = 2):
     Plot multiple tendency for each feature in the dataframe
     
     Args
-        df (datafame): dataframe input
+        df (dataframe): data. The index should be the timestamp and the dataframe must be sorted by the index
         number_columns (integer): number of columns, by default ONE column
         var_segment (string): name of the variable that segment the data to color the scatter plot
 

@@ -37,6 +37,10 @@ def custom_segmentation(df, var_segment, intervals_segments, labels_segments):
                                            include_lowest = True
                                           )
 
+    # order data by the custom segmentation - to generate plots it is neccesary to sort the data
+    # if the plot show a temporal relation like trends plots, it is necessary sort the data by index
+    df = df.sort_values(by = [var_segment])
+    
     return df
 """""""""""""""""""""""""""""""""""""""""""""""""  """""""""""""""""""""""""""""""""""""""""""""""""
 

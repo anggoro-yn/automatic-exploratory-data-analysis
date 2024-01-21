@@ -3,6 +3,11 @@
 **/.env
 *.env
 
-
+# plotly images output eda
 output_eda
-data
+
+
+# pkl data
+.pkl
+**/.pkl
+*.pkl
