@@ -11,9 +11,9 @@
   "reports_to_show":{
     "ydata_profiling": false,
     "univariate_analysis": false,
-    "bivariate_analysis": true,
-    "segmentation_analysis": true,
-    "categotical_analysis":false
+    "bivariate_analysis": false,
+    "segmentation_analysis": false,
+    "categotical_analysis":true
 
   },
 
@@ -92,8 +92,8 @@
     },
 
 
-  "categotical_analysis":{
-    "percentile_tranform":{
+  "categorical_analysis":{
+    "percentile_transform":{
       "categories_features":{
         "features":["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)"],
         "percentile":["quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile"]
@@ -104,15 +104,21 @@
       }
     },
 
+    "crosstab_freq_pair_features":{
+      "freq_normalized": true
+    },
+
+    "crosstab_freq_target_feature":{
+      "freq_normalized": true
+    },
+
+    "heatmap_multiple_features_vs_target_continuous":{
+      "aggregation_target": ["mean", "std"]
+    },
 
     "parallel":{
       "list_features":["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)"]
-    },
-
-    "T (degC)":123,
-    "p (mbar)":"original segmentation"
-
+    }
   }
 
-  
 }

@@ -14,7 +14,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""" SEGMENTATION DATA """""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""" SEGMENTATION DATA CUSTOM """""""""""""""""""""""""""""""""""""""""""""""""
 def custom_segmentation(df, var_segment, intervals_segments, labels_segments):
     """
     Given a dataframe, generate a new column with a categorical values that divide the data in differents segments. 
@@ -38,8 +38,10 @@ def custom_segmentation(df, var_segment, intervals_segments, labels_segments):
                                           )
 
     return df
+"""""""""""""""""""""""""""""""""""""""""""""""""  """""""""""""""""""""""""""""""""""""""""""""""""
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""" SEGMENTATION DATA PERCENTILES """""""""""""""""""""""""""""""""""""""""""""""""
 def generate_labels_percentile_segmentation(df, var_segment, list_percentile, list_labels_percentile_base):
     """
     Given a dataframe and a feature to segment in percentiles, calculate the labels of the segmentation
@@ -95,7 +97,7 @@ def percentile_segmentation(df, var_segment, type_percentile):
     Segment the data by a certain variable with a percentile segmentation. the segmentation could be by quartiles, quintiles, deciles
     
     Args
-        df (dataframe): dataframe input
+        df (dataframe): dataframe input that will be modified
         var_segment (string): variable feature/target used to segment the data
         type_percentile(string): type of percentile segmentation
     
