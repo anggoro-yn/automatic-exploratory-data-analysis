@@ -9,10 +9,10 @@
   
 
   "reports_to_show":{
-    "ydata_profiling": true,
-    "univariate_analysis": true,
-    "bivariate_analysis": true,
-    "segmentation_analysis": true,
+    "ydata_profiling": false,
+    "univariate_analysis": false,
+    "bivariate_analysis": false,
+    "segmentation_analysis": false,
     "categotical_analysis":true
 
   },
