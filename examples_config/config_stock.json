@@ -1,18 +1,18 @@
 {
   "config_report":{
-    "name_report": "dataset-climate-tf",
-    "name_data_pkl": "data_weather.pkl",
-    "target": "T (degC)",
-    "list_features": ["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)"],
+    "name_report": "dataset-stock-prices",
+    "name_data_pkl": "stock_prices.pkl",
+    "target": "VOO",
+    "list_features": ["CMPC.SN", "CHILE.SN", "COPEC.SN", "ANDINA-B.SN", "MSFT", "AAPL", "GOOG", "TSLA","QQQ"],
     "number_columns": 2
   },
-  
+
 
   "reports_to_show":{
-    "ydata_profiling": false,
-    "univariate_analysis": false,
-    "bivariate_analysis": false,
-    "segmentation_analysis": false,
+    "ydata_profiling": true,
+    "univariate_analysis": true,
+    "bivariate_analysis": true,
+    "segmentation_analysis": true,
     "categotical_analysis":true
 
   },
@@ -25,8 +25,8 @@
   
   "univariate_analysis":{
     "zoom_tendency":{
-      "start_date": "2009-01-01 00:10:00",
-      "end_date": "2010-01-01 00:00:00"
+      "start_date": "2022-01-01",
+      "end_date": "2024-01-01"
     },
 
     "smooth_data":{
@@ -42,7 +42,7 @@
     },
 
     "acf_pacf":{
-      "lags": 40
+      "lags": 30
     }
   },
 
@@ -55,23 +55,23 @@
 
     "scatter_plot":{
       "individual_scatter":{
-        "marginal": false
+        "marginal": true
       }
     },
 
     "correlations_features_lagged_target":{
-      "lags":40
+      "lags":30
     },
 
     "parallel":{
-      "list_features":["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)"]
+      "list_features":["CHILE.SN", "MSFT", "AAPL", "GOOG"]
     }
   },
 
 
   "segmentation_analysis":{
     "segments":[
-      {"type":"custom", "var_segment": "p (mbar)", "interval_segment": [0, 980, 1000, 1020], "labels_segment": ["Low Presure", "Medium Presure", "High Presure"]}
+      {"type":"custom", "var_segment": "VOO", "interval_segment": [1200, 1400, 1600, 1800], "labels_segment": ["S&P500 low price", "S&P500 medium price", "S&P500 high price"]}
     ],
 
     "correlations":{
@@ -86,8 +86,8 @@
     },
 
     "parallel_target_discrete":{
-        "show":false,
-        "list_features":["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)"]
+        "show":true,
+        "list_features":["CHILE.SN", "MSFT", "AAPL", "GOOG"]
       }
     },
 
@@ -95,11 +95,11 @@
   "categorical_analysis":{
     "percentile_transform":{
       "categories_features":{
-        "features":["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)"],
-        "percentile":["quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile"]
+        "features":["CMPC.SN", "CHILE.SN", "COPEC.SN", "ANDINA-B.SN", "MSFT", "AAPL", "GOOG", "TSLA","QQQ"],
+        "percentile":["quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile"]
       },
       "categories_target":{
-        "target":["T (degC)"],
+        "target":["VOO"],
         "percentile":["quartile"]
       }
     },
@@ -117,7 +117,7 @@
     },
 
     "parallel":{
-      "list_features":["p (mbar)", "Tpot (K)", "Tdew (degC)", "rh (%)"]
+      "list_features":["CHILE.SN", "MSFT", "AAPL", "GOOG"]
     }
   }
 

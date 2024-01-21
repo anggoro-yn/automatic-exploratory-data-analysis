@@ -142,8 +142,6 @@ def percentile_segmentation(df, var_segment, type_percentile):
         df[f'decile_{var_segment}'] = pd.qcut(df[var_segment], q = decile, labels = labels_decile)
 
     return df
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""  """""""""""""""""""""""""""""""""""""""""""""""""
 
 

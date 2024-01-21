@@ -138,7 +138,7 @@ def plot_individual_scatter_plot(df, feature_x, feature_y, marginal_hist = False
         fig = px.scatter(df, x = feature_x, y = feature_y, trendline="ols")
         tittle_plot = f'scatter plot: {feature_x} vs {feature_y}'
 
-    # change color trendline to red
+    # change color trendline to redgenerated
     fig.data[-1]['marker']['color'] = '#d62728' # change color to brick red
 
     # update title
@@ -403,19 +403,20 @@ def calculate_corr_features_lag_target(df, target, lags):
     """
     # initialize dataframe with correlations with lags in the features. row: lags // columns: features
     df_corr_lags = pd.DataFrame()
+    df_to_lag = df.copy() # in this code is generated a new column target to lag it. so it is necesary clone the data to not affect the oriignal df
     
     # create a column additional (target_shift) that is a clone of the target. see the correlation of the target with itself (autocorrelation)
-    df[target + '_shift'] = df[target]
+    df_to_lag[target + '_shift'] = df_to_lag[target]
     
     # define list feature and list target. Only list_feature is lagged
     list_all = df.columns.tolist()
-    list_features = list(set(df.columns.tolist()) - set([target]))
+    list_features = list(set(df_to_lag.columns.tolist()) - set([target]))
     list_target = [target]
 
     # calculate correlation
-    df_original_data = df.copy()
     for lag in range(lags+1):
         # verbose
+        df_original_data = df_to_lag.copy()
         if lag % 20 == 0:
             print(f'calculating corr with lag: {lag}')
         
