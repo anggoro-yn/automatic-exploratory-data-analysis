@@ -786,7 +786,7 @@ def plot_freq_segmentation(df, var_segment):
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""" PARALLEL DISCRETE TARGET """""""""""""""""""""""""""""""""""""""""""""""""
-def plot_parallel_continuous_discrete_target(df, list_features_target, target_discrete):
+def plot_parallel_continuous_discrete_target(df, list_features_target, var_segment_target_discrete):
     """
     Plot a parallel with features continous variables an target discrete target.
     
@@ -797,7 +797,7 @@ def plot_parallel_continuous_discrete_target(df, list_features_target, target_di
     Args
         df (dataframe): dataframe with the data
         list_features_target (list): list with the features to plot in the parallel plot and also it has to have the target
-        target_discrete (string): in addition it is necesary define a string with the name of the target
+        var_segment_target_discrete (string): define a string with the name of the target. name of the target as discrete variable
 
     Return
         fig (figure plotly): fig of plotly with the plot generated
@@ -806,11 +806,11 @@ def plot_parallel_continuous_discrete_target(df, list_features_target, target_di
     df_parallel = df[list_features_target].drop_duplicates()
 
     # transform target_discrete string into integer. using internally definition of the variable in pandas
-    df_parallel[target_discrete] = df_parallel[target_discrete].cat.codes
+    df_parallel[var_segment_target_discrete] = df_parallel[var_segment_target_discrete].cat.codes
 
     # plot
     fig = px.parallel_coordinates(df_parallel, 
-                                  color = target_discrete,
+                                  color = var_segment_target_discrete,
                                   color_continuous_scale=px.colors.diverging.Tealrose, color_continuous_midpoint=2)
 
     # change title

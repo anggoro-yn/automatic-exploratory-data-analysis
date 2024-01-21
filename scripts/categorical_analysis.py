@@ -424,12 +424,12 @@ def calculate_freq_target_each_features(df, target, ct_normalized = True):
 
     # define kind to aggregation - count/percent
     if ct_normalized == True:
-        aux = np.array(df[target].value_counts().tolist()).reshape(1,len(df[target].value_counts().unique()))
+        aux = np.array(df[target].value_counts().tolist()).reshape(1,len(df[target].cat.categories.tolist()))
         resume = pd.DataFrame(aux / aux.sum() , columns = df[target].value_counts().index.tolist())
         resume.index =  pd.MultiIndex.from_product([ [target]  , ['Mean'] ] )
     
     else:
-        aux = np.array(df[target].value_counts().tolist()).reshape(1,len(df[target].value_counts().unique()))
+        aux = np.array(df[target].value_counts().tolist()).reshape(1,len(df[target].cat.categories.tolist()))
         resume = pd.DataFrame(aux , columns = df[target].value_counts().index.tolist())
         resume.index =  pd.MultiIndex.from_product([ [target]  , ['Mean'] ] )
     
@@ -1081,7 +1081,7 @@ def calculate_woe_iv(df, feature_woe, target):
     """
     # get unique values of the target and get the positive categorie and negative categorie of the target. 
     # First cat -> positive / second cat -> negative
-    list_cat_target = data[target].cat.categories.tolist()
+    list_cat_target = df[target].cat.categories.tolist()
     target_cat_positive = list_cat_target[0]
     target_cat_negative = list_cat_target[1]
 

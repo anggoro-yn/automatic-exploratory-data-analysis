@@ -355,7 +355,7 @@ if show_segmentation_analysis:
     # read param parallel discrete target
     param_parallel_discrete_target_show = config['segmentation_analysis']['parallel_target_discrete']['show']
     param_features_parallel_discrete_target = config['segmentation_analysis']['parallel_target_discrete']['list_features']
-    param_features_target_parallel_discrete_target = param_features_parallel_discrete_target + [param_target]
+    param_features_target_parallel_discrete_target = param_features_parallel_discrete_target + [param_segments_data_var + '_segments'] # list features and target with the suffix "_segment" beacuase the target is segmented
 
 
     """ GENERATE DATA SEGMENTED """ # segment and sort data by variable segment to do all the plots in order incremental of the segmentation
@@ -477,8 +477,8 @@ if show_segmentation_analysis:
     if param_parallel_discrete_target_show == True:
         print(f'parallel discrete target... time:{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
         fig_parallel_target_discrete = se.plot_parallel_continuous_discrete_target(df = data_segmented, 
-                                                                                   list_features_target = param_features_target_parallel_discrete_target, 
-                                                                                   target_discrete = param_target)
+                                                                        list_features_target = param_features_target_parallel_discrete_target, 
+                                                                        var_segment_target_discrete = param_segments_data_var + '_segments')
         fig_parallel_target_discrete.write_html(f"output_eda/{id_report}/segmentation_analysis/parallel_target_discrete.html")
 
 
