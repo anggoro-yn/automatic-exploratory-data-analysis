@@ -824,5 +824,3 @@ def plot_parallel_continuous_discrete_target(df, list_features_target, var_segme
 """""""""""""""""""""""""""""""""""""""""""""""""  """""""""""""""""""""""""""""""""""""""""""""""""
 
 
-
-

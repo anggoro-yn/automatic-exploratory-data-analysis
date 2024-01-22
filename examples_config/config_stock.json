@@ -71,7 +71,7 @@
 
   "segmentation_analysis":{
     "segments":[
-      {"type":"custom", "var_segment": "VOO", "interval_segment": [1200, 1400, 1600, 1800], "labels_segment": ["S&P500 low price", "S&P500 medium price", "S&P500 high price"]}
+      {"type":"custom", "var_segment": "VOO", "interval_segment": [300, 360, 400, 420], "labels_segment": ["S&P500 low price", "S&P500 medium price", "S&P500 high price"]}
     ],
 
     "correlations":{

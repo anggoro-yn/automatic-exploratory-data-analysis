@@ -438,12 +438,12 @@ def calculate_freq_target_each_features(df, target, ct_normalized = True):
         if ct_normalized == True:
             data_aux = pd.crosstab(df[var], df[target])
             data_aux = data_aux.div(data_aux.sum(1).astype(float), axis = 0)
-            data_aux.index = pd.MultiIndex.from_product([ [var]  , df[var].unique().tolist() ] )
+            data_aux.index = pd.MultiIndex.from_product([ [var]  , df[var].cat.categories.tolist() ] )
             resume = pd.concat((resume,data_aux) , axis = 0, sort = False)
         
         else:
             data_aux = pd.crosstab(df[var], df[target])
-            data_aux.index = pd.MultiIndex.from_product([ [var]  , df[var].unique().tolist() ] )
+            data_aux.index = pd.MultiIndex.from_product([ [var]  , df[var].cat.categories.tolist() ] )
             resume = pd.concat((resume,data_aux) , axis = 0, sort = False)
 
     # transform output into 2 decimals
