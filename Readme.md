@@ -8,6 +8,7 @@ Write a configuration json file "config.json" and run a python script "main.py" 
 not pushed
 - There is a folder output_eda where are saved the plots output of the eda. This output are not pushed but can be obtained running the codes
 - There codes to do subplots that are invoked in the script main.py. But, in addition, there are codes to generate individual plots that there are not called in the script main.py (for example: there a function to plot subplots of histograms that are called in the script main.py but also there a function to plot the histogram of only one feature). **For ALL PLOTS there the version of individual plot and the version of subplot**
+- The repo with jupyter notebooks used to generate this scripts can be find in the following link: https://github.com/joseortegalabra/exploratory-data-analysis
 
 
 ## Templates codes:
