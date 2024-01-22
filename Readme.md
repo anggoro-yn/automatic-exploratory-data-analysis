@@ -96,35 +96,106 @@ Indicate true/false which reports to do the plots and which reports skip
 ---
 ### Categorical analysis
 
+**categorical_analysis**
+
+"features": list of features that will transformend into a categorical variable. It is neccesary transform all the features of the dataframe
+
+"percentile_features": list of kind of percentile to categorize each feature. choices: quartile, quintile, decile
+
+"target":lit of the target that will transformed into a categorical variable
+
+ "percentile_target":list of kind of percentile to categorize the target. choices: quartile, quintile, decile
+
+"crosstab_freq_pair_features (freq_normalized)": normalize the table of frecuency between each pair of features
+
+"crosstab_freq_target_feature (freq_normalized)": normalize the table of frecuency between each feature vs target
+
+"heatmap_multiple_features_vs_target_continuous (aggregation_target)": aggregation of the target in a comparative table between each categorie in pair of feature and the aggregation of the target, for example mean, std, min, max, etc
+
+**parallel:(list_features)**:indicate the list of features to plot into a parallel plot vs the target as final step 
 
 
-  "categorical_analysis":{
-    "percentile_transform":{
-      "categories_features":{
-        "features":["CMPC.SN", "CHILE.SN", "COPEC.SN", "ANDINA-B.SN", "MSFT", "AAPL", "GOOG", "TSLA","QQQ"],
-        "percentile":["quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile", "quartile"]
-      },
-      "categories_target":{
-        "target":["VOO"],
-        "percentile":["quartile"]
-      }
-    },
+---
 
-    "crosstab_freq_pair_features":{
-      "freq_normalized": true
-    },
 
-    "crosstab_freq_target_feature":{
-      "freq_normalized": true
-    },
+### Kind of plots presents in this repo - notebooks with codes used to develop this plots
 
-    "heatmap_multiple_features_vs_target_continuous":{
-      "aggregation_target": ["mean", "std"]
-    },
 
-    "parallel":{
-      "list_features":["CHILE.SN", "MSFT", "AAPL", "GOOG"]
-    }
-  }
+**ydata-profiling**
 
-}
+[1 link-data-profiling](https://github.com/joseortegalabra/exploratory-data-analysis/tree/main/1_ydata_profiling)
+
+
+
+**Univariate Analysis**
+
+[1 descriptive statistics table](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/2_plots_univariate_analysis/1_table_statistics.ipynb)
+
+[2 histograms](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/2_plots_univariate_analysis/2_histogram.ipynb)
+
+[3 kernel density + histograms](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/2_plots_univariate_analysis/3_kernel_density.ipynb)
+
+[4 original data trend](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/2_plots_univariate_analysis/4_tendency.ipynb)
+
+[5 boxplots with monthly aggregation](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/2_plots_univariate_analysis/5_boxplot_months.ipynb)
+
+[6 original vs smoothed data trend](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/2_plots_univariate_analysis/6_smooth_data.ipynb)
+
+[7 Autocorrelation and partial autocorrelation functions-v1](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/2_plots_univariate_analysis/7_autocorrelations.ipynb)
+
+[7 Autocorrelation and partial autocorrelation functions-v2](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/2_plots_univariate_analysis/7_autocorrelations_v2.ipynb)
+
+[8 Other analyzes for time series-v1](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/2_plots_univariate_analysis/8_partial_autocorrelacions.ipynb)
+
+[8 Other analyzes for time series-v2](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/2_plots_univariate_analysis/8_partial_autocorrelations-v2.ipynb)
+
+
+**Bivariate Analysis**
+
+[1 correlations](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/3_plots_bivariate_analysis/1_correlations_pearson.ipynb)
+
+[2 scatter plots](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/3_plots_bivariate_analysis/2_scatter_dispersion.ipynb)
+
+[3 correlations features with lag](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/3_plots_bivariate_analysis/3_correlations_features_lag_target.ipynb)
+
+[4 Multivariate parallel plot](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/3_plots_bivariate_analysis/4_parallel.ipynb)
+
+
+**Segmentation Analysis**
+
+[0 generate data segmentation](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/4_plots_segmentation_analysis/0_intro_get_data.ipynb)
+
+[1 segmented data distribution](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/4_plots_segmentation_analysis/1_distribution_segmentation.ipynb)
+
+[2 descriptive statistical table segmented data](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/4_plots_segmentation_analysis/2_table_statistics_segmentation.ipynb)
+
+[3 histograms and boxplots segmented data](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/4_plots_segmentation_analysis/3_histogram_boxplots_segmentation.ipynb)
+
+[4 trend segmented data](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/4_plots_segmentation_analysis/4_tendency_segmentation.ipynb)
+
+[5 segmented data correlations](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/4_plots_segmentation_analysis/5_correlations_segmentation.ipynb)
+
+[6 scatter plots segmented data](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/4_plots_segmentation_analysis/6_scatter_segmentation.ipynb)
+
+[7 parallel plot only when target is segmented](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/4_plots_segmentation_analysis/7_parallel_target_segmentation.ipynb)
+
+
+**Categorical Analysis**
+
+[0 generate categorical data](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/5_plots_categorical_analysis/0_intro_get_data.ipynb)
+
+[2 crosstab frequency features and target](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/5_plots_categorical_analysis/2_crosstab_freq_features_target.ipynb)
+
+[3 frequency between 2 categorical features](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/5_plots_categorical_analysis/3_freq_x_cat_x_cat.ipynb)
+
+[4 univariate analysis categorical features vs continuous target](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/5_plots_categorical_analysis/4_univariate_analysis_x_cat_y_cont.ipynb)
+
+[5 univariate analysis categorical features vs categorical target](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/5_plots_categorical_analysis/5_univariate_analysis_x_cat_y_cat.ipynb)
+
+[6 bivariate analysis categorical features vs continuous target](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/5_plots_categorical_analysis/6_bivariate_analysis_x_cat_y_cont.ipynb)
+
+[7 bivariate analysis categorical features vs categorical target](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/5_plots_categorical_analysis/7_bivariate_analysis_x_cat_y_cat.ipynb)
+
+[8 parallel plot features categorical vs categorical target](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/5_plots_categorical_analysis/8_parallel_x_cat_y_cat.ipynb)
+
+[9 woe iv - categorical features vs binary target](https://github.com/joseortegalabra/exploratory-data-analysis/blob/main/5_plots_categorical_analysis/9_woe_iv_x_cat_y_cat.ipynb)
